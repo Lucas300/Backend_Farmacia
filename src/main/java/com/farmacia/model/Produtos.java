@@ -9,18 +9,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "tb_produtos")
 public class Produtos {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
+	private Long id;
 
 	@NotNull
 	private String nome;
@@ -32,8 +32,10 @@ public class Produtos {
 	
 	private String foto;
 
-	@ManyToOne
+	
 	@JsonIgnoreProperties("produtos")
+	@ManyToOne
+	@JoinColumn(name = "categorias_id")
 	private Categorias categorias;
 
 	public Long getId() {

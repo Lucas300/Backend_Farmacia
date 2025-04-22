@@ -20,13 +20,17 @@ import jakarta.validation.constraints.Size;
 public class Categorias {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
+	private Long id;
 
 	@NotNull
-	String nome;
+	private String nome;
 
 	@NotNull
-	String descricao;
+	private String descricao;
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "categorias", cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties("categorias")
+	private List<Produtos> produtos;
 
 	public Long getId() {
 		return id;
@@ -59,8 +63,4 @@ public class Categorias {
 	public void setProdutos(List<Produtos> produtos) {
 		this.produtos = produtos;
 	}
-
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "categorias", cascade = CascadeType.REMOVE)
-	@JsonIgnoreProperties("categorias")
-	List<Produtos> produtos;
 }
