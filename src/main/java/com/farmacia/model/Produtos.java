@@ -4,39 +4,40 @@ import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "tb_produtos")
+@Table(name = "tb_produto")
 public class Produtos {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 
-	@NotNull
-	private String nome;
-	private String descricao;
-	private String laboratorio;
-	@DecimalMin(value = "0.0", inclusive = false, message = "O preço deve ser maior que zero")
-	@Column(nullable = false, precision = 10, scale = 2)
-	private BigDecimal preco;
-	
-	private String foto;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	
+
+    private String nome;
+
+
+    private String descricao;
+
+
+    private Integer quantidade;
+
+    private String laboratorio;
+
+    
+    private BigDecimal preco;
+
+    private String foto;
+
+    @ManyToOne
 	@JsonIgnoreProperties("produtos")
-	@ManyToOne
-	@JoinColumn(name = "categorias_id")
-	private Categorias categorias;
+    private Categorias categoria;
 
 	public Long getId() {
 		return id;
@@ -62,12 +63,20 @@ public class Produtos {
 		this.descricao = descricao;
 	}
 
-	public String getLaboratio() {
+	public Integer getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(Integer quantidade) {
+		this.quantidade = quantidade;
+	}
+
+	public String getLaboratorio() {
 		return laboratorio;
 	}
 
-	public void setLaboratio(String laboratio) {
-		this.laboratorio = laboratio;
+	public void setLaboratorio(String laboratorio) {
+		this.laboratorio = laboratorio;
 	}
 
 	public BigDecimal getPreco() {
@@ -86,12 +95,11 @@ public class Produtos {
 		this.foto = foto;
 	}
 
-	public Categorias getCategorias() {
-		return categorias;
+	public Categorias getCategoria() {
+		return categoria;
 	}
 
-	public void setCategorias(Categorias categorias) {
-		this.categorias = categorias;
+	public void setCategoria(Categorias categoria) {
+		this.categoria = categoria;
 	}
-
 }

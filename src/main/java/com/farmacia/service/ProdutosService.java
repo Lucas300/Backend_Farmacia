@@ -1,49 +1,48 @@
 package com.farmacia.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.farmacia.model.Produtos;
 import com.farmacia.repository.ProdutosRepository;
-
-import jakarta.validation.Valid;
 
 @Service
 public class ProdutosService {
 
     @Autowired
-    private ProdutosRepository produtosRepository;
+    private ProdutosRepository produtoRepository;
 
-    public List<Produtos> getAll() {
-        return produtosRepository.findAll();
+    public List<Produtos> buscarTodos() {
+        return produtoRepository.findAll();
     }
 
-    public Produtos getById(Long id) {
-        return produtosRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    public Optional<Produtos> buscarPorId(Long id) {
+        return produtoRepository.findById(id);
     }
 
-    public List<Produtos> getByNome(String nome) {
-        return produtosRepository.findAllByNomeContainingIgnoreCase(nome);
+    public List<Produtos> buscarPorNome(String nome) {
+        return produtoRepository.findAllByNomeContainingIgnoreCase(nome);
     }
 
-    public Produtos create(@Valid Produtos produto) {
-        return produtosRepository.save(produto);
+    public Produtos salvar(Produtos produto) {
+        return produtoRepository.save(produto);
     }
 
-    public Produtos update(@Valid Produtos produto) {
-        if (!produtosRepository.existsById(produto.getId())) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    public Optional<Produtos> atualizar(Produtos produto) {
+        if (produtoRepository.existsById(produto.getId())) {
+            return Optional.of(produtoRepository.save(produto));
         }
-        return produtosRepository.save(produto);
+        return Optional.empty();
     }
 
-    public void delete(Long id) {
-        Produtos produto = getById(id); // já verifica se existe
-        produtosRepository.delete(produto);
+    public boolean deletar(Long id) {
+        if (produtoRepository.existsById(id)) {
+            produtoRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

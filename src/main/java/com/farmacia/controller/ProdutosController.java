@@ -3,14 +3,19 @@ package com.farmacia.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.farmacia.model.Produtos;
 import com.farmacia.service.ProdutosService;
-
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/produtos")
@@ -18,38 +23,41 @@ import jakarta.validation.Valid;
 public class ProdutosController {
 
     @Autowired
-    private ProdutosService produtosService;
+    private ProdutosService produtoService;
 
     @GetMapping
     public ResponseEntity<List<Produtos>> getAll() {
-        return ResponseEntity.ok(produtosService.getAll());
+        return ResponseEntity.ok(produtoService.buscarTodos());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Produtos> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(produtosService.getById(id));
+        return produtoService.buscarPorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/nome/{nome}")
     public ResponseEntity<List<Produtos>> getByNome(@PathVariable String nome) {
-        return ResponseEntity.ok(produtosService.getByNome(nome));
+        return ResponseEntity.ok(produtoService.buscarPorNome(nome));
     }
 
     @PostMapping
-    public ResponseEntity<Produtos> post(@Valid @RequestBody Produtos produto) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(produtosService.create(produto));
+    public ResponseEntity<Produtos> post(@RequestBody Produtos produto) {
+        return ResponseEntity.status(201).body(produtoService.salvar(produto));
     }
 
     @PutMapping
-    public ResponseEntity<Produtos> put(@Valid @RequestBody Produtos produto) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(produtosService.update(produto));
+    public ResponseEntity<Produtos> put(@RequestBody Produtos produto) {
+        return produtoService.atualizar(produto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        produtosService.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        return produtoService.deletar(id) ?
+                ResponseEntity.noContent().build() :
+                ResponseEntity.notFound().build();
     }
 }

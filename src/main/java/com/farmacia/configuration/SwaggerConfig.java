@@ -1,8 +1,10 @@
 package com.farmacia.configuration;
 
+import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
+import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 
 import org.springdoc.core.customizers.OpenApiCustomizer;
@@ -13,14 +15,15 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
 
 	@Bean
-    OpenAPI springFarmaciaOpenAPI() {
-        return new OpenAPI()
-            .info(new Info()
-                .title("Farmacia")
-                .description("Api para gerenciar produtos de uma Farmácia")
-                .version("v0.0.1"));            
-    }
-
+	OpenAPI springFarmaciaOpenAPI() {
+		return new OpenAPI()
+				.info(new Info().title("Projeto App Fitness").description("Projeto App Fitness - Generation Brasil")
+						.version("v0.0.1")
+						.contact(new Contact().name("Lucas").url("https://github.com/lucas300")
+								.email("ludaniel.sd@gmail.com")))
+				.externalDocs(new ExternalDocumentation().description("Github")
+						.url("https://github.com/lucas300"));
+	}
 
 	@Bean
 	OpenApiCustomizer customerGlobalHeaderOpenApiCustomiser() {

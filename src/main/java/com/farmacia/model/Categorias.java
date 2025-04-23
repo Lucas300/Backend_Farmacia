@@ -12,35 +12,26 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "tb_categorias")
+@Table(name = "tb_categoria")
 public class Categorias {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
-	private String nome;
+    private String nome;
+    
+    private String descricao;
 
-	@NotNull
-	private String descricao;
-	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "categorias", cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "categoria", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("categorias")
-	private List<Produtos> produtos;
+    private List<Produtos> produtos;
+    
+    
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getNome() {
+    public String getNome() {
 		return nome;
 	}
 
@@ -48,19 +39,27 @@ public class Categorias {
 		this.nome = nome;
 	}
 
-	public String getDescricao() {
-		return descricao;
-	}
+	public Long getId() {
+        return id;
+    }
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public List<Produtos> getProdutos() {
-		return produtos;
-	}
+    public String getDescricao() {
+        return descricao;
+    }
 
-	public void setProdutos(List<Produtos> produtos) {
-		this.produtos = produtos;
-	}
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public List<Produtos> getProdutos() {
+        return produtos;
+    }
+
+    public void setProdutos(List<Produtos> produtos) {
+        this.produtos = produtos;
+    }
 }
