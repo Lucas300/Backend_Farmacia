@@ -12,7 +12,7 @@ Este é o back-end de uma aplicação fullstack desenvolvida para o gerenciament
 - Java 17  
 - Spring Boot  
 - Spring Data JPA  
-- PostgreSQL  
+- MySQL  
 - maven  
 - Swagger (opcional)
 

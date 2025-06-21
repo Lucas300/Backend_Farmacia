@@ -17,12 +17,12 @@ public class SwaggerConfig {
 	@Bean
 	OpenAPI springFarmaciaOpenAPI() {
 		return new OpenAPI()
-				.info(new Info().title("Projeto App Fitness").description("Projeto App Fitness - Generation Brasil")
+				.info(new Info().title("Projeto Farmacia").description("Gestão de produtos de uma farmácia")
 						.version("v0.0.1")
 						.contact(new Contact().name("Lucas").url("https://github.com/lucas300")
 								.email("ludaniel.sd@gmail.com")))
 				.externalDocs(new ExternalDocumentation().description("Github")
-						.url("https://github.com/lucas300"));
+						.url("https://github.com/Lucas300/Backend_Farmacia"));
 	}
 
 	@Bean
